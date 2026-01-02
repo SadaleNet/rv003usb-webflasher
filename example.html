@@ -1,0 +1,39 @@
+<script src="rv003usb_webflasher.js"></script>
+<script>
+	async function start_flashing() {
+		let rom_content = null
+		if(document.getElementById("custom_file").files[0] === undefined) {
+			alert(".bin file missing!")
+			return
+		}
+		rom_content = new Uint8Array(await document.getElementById("custom_file").files[0].arrayBuffer())
+		
+		STEP_NAME = {0: "Loading .bin", 1:"Opening USB Device", 2:"Stopping bootloader timeout", 3:"Unlocking flash",
+			4:"Flashing", 5:"Verifying", 6:"Rebooting", 7:"Success!"}
+		result = await rv003usb_webflasher(rom_content, (status) => {
+			buffer = STEP_NAME[status.step]
+			if(status.step == 4 || status.step == 5) {
+				buffer += ` [${status.offset}/${status.size}]`
+			}
+			document.getElementById("flash_status").innerHTML = buffer
+		})
+		if(!result) {
+			alert("Error!")
+			document.getElementById("flash_status").innerHTML += " [ERROR!]"
+		} else {
+			alert("Success!")
+		}
+	}
+</script>
+
+<h3>rv003usb webflasher</h3>
+<input type="file" id="custom_file" accept=".bin">
+<button id="flash_button" onclick="start_flashing()">Flash! (pick rv003usb)</button> <br/>
+Status: <span id="flash_status">(not started)</span>
+
+<script>
+	if(navigator.hid === undefined) {
+		document.getElementById("flash_button").disabled = true
+		document.getElementById("flash_status").innerHTML = "Only support Chrome-based browsers!"
+	}
+</script>
