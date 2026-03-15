@@ -2,7 +2,7 @@
 
 WebFlasher for CH32V003 devices with [rv003usb bootloader](https://github.com/cnlohr/rv003usb/tree/master/bootloader) using WebHID API.
 
-It supports Chrome-based browsers. It has read-back verification implemented. Probably also supports CH32V006 but I couldn't test.
+It supports Chrome-based browsers. It has read-back verification implemented. ~~Probably also supports CH32V006 but I couldn't test.~~
 
 I made it for [ilo nena](https://ilonena.sadale.net/) [[Github](https://github.com/SadaleNet/ilo-nena)] and figured out that someone else will find it of use so I'm releasing it.
 
